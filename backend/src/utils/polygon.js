@@ -1,10 +1,12 @@
-const { PolygonClient } = require('@polygon/client');
-const { Contract } = require('@polygon/contract');
+const Web3 = require('web3');
+require('dotenv').config();
 
-const client = new PolygonClient({ rpcUrl: process.env.POLYGON_RPC_URL, privateKey: process.env.POLYGON_PRIVATE_KEY });
+const rpcUrl = process.env.POLYGON_RPC_URL; 
+const privateKey = process.env.PRIVATE_KEY; 
 
-const contractAddress = 'your_contract_address';
-const abi = [ /* Contract ABI here */ ];
-const contract = new Contract(abi, contractAddress, client);
+const web3 = new Web3(new Web3.providers.HttpProvider(rpcUrl));
 
-module.exports = { client, contract };
+const account = web3.eth.accounts.privateKeyToAccount(privateKey);
+web3.eth.accounts.wallet.add(account);
+
+module.exports = web3;
