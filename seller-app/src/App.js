@@ -1,8 +1,9 @@
 import React from 'react';
+import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar/Navbar';
 import ProductPage from './pages/ProductPage';
-import ProductDetailPage from './pages/ProductDetailPage';
+import ProductDetailPage from './pages/ProductDetailPage'; // For viewing and editing products
 import AddProductPage from './pages/AddProductPage';
 import CustomerPage from './pages/CustomerPage';
 import CustomerDetailPage from './pages/CustomerDetailPage';

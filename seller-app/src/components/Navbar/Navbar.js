@@ -1,62 +1,147 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Bars3Icon, XMarkIcon, UserCircleIcon } from '@heroicons/react/24/solid';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
-  const [isDropdownOpen, setDropdownOpen] = useState(false);
-  const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const navigate = useNavigate();
 
-  const toggleDropdown = () => setDropdownOpen(!isDropdownOpen);
-  const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
+  const toggleProfileDropdown = () => {
+    setProfileDropdownOpen(!profileDropdownOpen);
+  };
+
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
+
+  const closeSidebar = () => {
+    setSidebarOpen(false);
+  };
 
   return (
-    <nav className="bg-gray-900 text-white p-4 flex justify-between items-center">
-      <div className="flex items-center space-x-4">
-        {/* Menu Icon */}
-        <button onClick={toggleSidebar} className="text-white lg:hidden">
-          <Bars3Icon className="h-6 w-6" aria-hidden="true" />
-        </button>
-
-        {/* Sidebar */}
-        <div className={`fixed inset-0 z-50 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out lg:hidden`}>
-          <div className="bg-gray-900 text-white w-64 h-full p-4">
-            {/* Close Sidebar Icon */}
-            <button onClick={toggleSidebar} className="text-white mb-4">
-              <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+    <nav className="bg-[#208468] p-4 fixed top-0 w-full z-10">
+      <div className="container flex justify-between items-center">
+        <div className="flex items-center">
+          <button onClick={toggleSidebar} className="text-white mr-4">
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+          </button>
+          <Link to="/" className="text-white text-2xl font-bold">
+            Dukaan420
+          </Link>
+        </div>
+        <div className="flex items-center">
+          <div className="relative">
+            <button
+              onClick={toggleProfileDropdown}
+              className="text-white hover:text-gray-300 flex items-center"
+            >
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M12 9c-2.761 0-5 2.239-5 5s2.239 5 5 5 5-2.239 5-5-2.239-5-5-5zm0 2a3 3 0 100 6 3 3 0 000-6z"
+                ></path>
+              </svg>
+              <span className="ml-1">Profile</span>
             </button>
-            <Link to="/dashboard" className="block py-2 hover:bg-gray-700 rounded">Analytics</Link>
-            <Link to="/products" className="block py-2 hover:bg-gray-700 rounded">Product Management</Link>
-            <Link to="/customers" className="block py-2 hover:bg-gray-700 rounded">Customer Management</Link>
-            <Link to="/sales-summary" className="block py-2 hover:bg-gray-700 rounded">Sales and Earnings</Link>
-            <Link to="/reports" className="block py-2 hover:bg-gray-700 rounded">Reports</Link>
+            {profileDropdownOpen && (
+              <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20">
+                <Link
+                  to="/profile"
+                  className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                >
+                  Profile
+                </Link>
+              </div>
+            )}
           </div>
-
-          {/* Overlay for closing sidebar by clicking outside */}
-          <div className="fixed inset-0 bg-black opacity-50" onClick={toggleSidebar}></div>
-        </div>
-
-        {/* Links for larger screens */}
-        <div className="hidden lg:flex space-x-4">
-          <Link to="/dashboard" className="hover:text-gray-300">Analytics</Link>
-          <Link to="/products" className="hover:text-gray-300">Product Management</Link>
-          <Link to="/customers" className="hover:text-gray-300">Customer Management</Link>
-          <Link to="/sales-summary" className="hover:text-gray-300">Sales and Earnings</Link>
-          <Link to="/reports" className="hover:text-gray-300">Reports</Link>
         </div>
       </div>
-
-      {/* User Icon and Dropdown */}
-      <div className="relative">
-        <button onClick={toggleDropdown} className="text-white">
-          <UserCircleIcon className="h-8 w-8" aria-hidden="true" />
-        </button>
-        {isDropdownOpen && (
-          <div className="absolute right-0 mt-2 w-48 bg-white text-black rounded-lg shadow-lg">
-            <Link to="/profile" className="block px-4 py-2 hover:bg-gray-100 rounded">Profile</Link>
-            <Link to="/logout" className="block px-4 py-2 hover:bg-gray-100 rounded">Sign Out</Link>
+      {sidebarOpen && (
+        <div className="fixed inset-0 flex z-40">
+          <div
+            className="fixed inset-0 bg-black opacity-50"
+            onClick={toggleSidebar}
+          ></div>
+          <div className="relative flex-1 flex flex-col max-w-xs w-full bg-[#208468]">
+            <div className="absolute top-0 right-0 -mr-12 pt-2">
+              <button
+                className="ml-1 flex items-center justify-center h-10 w-10 rounded-full focus:outline-none focus:bg-gray-600"
+                onClick={toggleSidebar}
+              >
+                <svg
+                  className="h-6 w-6 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M6 18L18 6M6 6l12 12"
+                  ></path>
+                </svg>
+              </button>
+            </div>
+            <div className="flex-1 h-0 pt-5 pb-4 overflow-y-auto">
+              <nav className="mt-5 px-2 space-y-1">
+                {/* New Menu Links */}
+                <Link
+                  to="/"
+                  onClick={closeSidebar}
+                  className="block py-2 text-white hover:bg-[#1b6b56] rounded"
+                >
+                  Analytics
+                </Link>
+                <Link
+                  to="/products"
+                  onClick={closeSidebar}
+                  className="block py-2 text-white hover:bg-[#1b6b56] rounded"
+                >
+                  Product Management
+                </Link>
+                <Link
+                  to="/customers"
+                  onClick={closeSidebar}
+                  className="block py-2 text-white hover:bg-[#1b6b56] rounded"
+                >
+                  Customer Management
+                </Link>
+                <Link
+                  to="/sales-summary"
+                  onClick={closeSidebar}
+                  className="block py-2 text-white hover:bg-[#1b6b56] rounded"
+                >
+                  Sales and Earnings
+                </Link>
+                <Link
+                  to="/reports"
+                  onClick={closeSidebar}
+                  className="block py-2 text-white hover:bg-[#1b6b56] rounded"
+                >
+                  Reports
+                </Link>
+              </nav>
+            </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </nav>
   );
 };
