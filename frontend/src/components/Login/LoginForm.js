@@ -5,16 +5,22 @@ import { loginUser } from '../../utils/api';
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
     try {
       const { data } = await loginUser({ email, password });
       localStorage.setItem('token', data.token);
       navigate('/');
     } catch (error) {
-      console.error('Error logging in', error);
+      if (error.response && error.response.data && error.response.data.message) {
+        setError(error.response.data.message);
+      } else {
+        setError('Error logging in');
+      }
     }
   };
 
@@ -22,6 +28,7 @@ const LoginForm = () => {
     <div className="container mx-auto p-4 max-w-md">
       <h2 className="text-2xl font-bold mb-4">Login</h2>
       <form onSubmit={handleSubmit} className="bg-white shadow-md rounded-lg p-4">
+        {error && <div className="mb-4 text-red-500">{error}</div>}
         <div className="mb-4">
           <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
           <input

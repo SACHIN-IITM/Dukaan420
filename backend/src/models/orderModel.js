@@ -1,56 +1,49 @@
+// orderModel.js
 const mongoose = require('mongoose');
-const { v4: uuidv4 } = require('uuid'); // UUID library to generate unique order IDs
 
 const orderSchema = new mongoose.Schema({
-  orderId: {
-    type: String,
-    unique: true,
-    default: uuidv4 // Automatically generates a unique ID for each order
-  },
-  user: { 
-    type: mongoose.Schema.Types.ObjectId, 
-    ref: 'User',
-    required: true 
-  },
   orderItems: [
     {
-      product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
-      quantity: Number,
-      price: Number
-    }
+      product: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Product',
+        required: true,
+      },
+      qty: {
+        type: Number,
+        required: true,
+      },
+    },
   ],
+  totalAmount: {
+    type: Number,
+    required: true,
+  },
   shippingAddress: {
-    street: String,
-    city: String,
-    country: String,
-    zip: String
-  },
-  paymentInfo: {
-    transactionHash: String,
-    status: {
+    address: {
       type: String,
-      enum: ['Pending', 'Completed', 'Failed'],
-      default: 'Pending'
-    }
+      required: true,
+    },
+    city: {
+      type: String,
+      required: true,
+    },
+    postalCode: {
+      type: String,
+      required: true,
+    },
+    country: {
+      type: String,
+      required: true,
+    },
   },
-  totalPrice: Number,
-  orderStatus: {
-    type: String,
-    enum: ['Processing', 'Shipped', 'Delivered', 'Cancelled'],
-    default: 'Processing'
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User', // Make sure this matches your user model
+    required: false, // Or true if you want it to be mandatory
   },
-  createdAt: {
-    type: Date,
-    default: Date.now
-  }
-});
-
-// Middleware to automatically set a unique orderId if it's not present
-orderSchema.pre('save', function(next) {
-  if (!this.orderId) {
-    this.orderId = uuidv4();
-  }
-  next();
+}, {
+  timestamps: true,
 });
 
 module.exports = mongoose.model('Order', orderSchema);
