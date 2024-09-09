@@ -26,7 +26,7 @@ router.post('/login', async (req, res) => {
     if (!user || !(await user.comparePassword(password))) {
       return res.status(401).json({ message: 'Invalid email or password' });
     }
-    const token = jwt.sign({ id: user._id }, 'your_jwt_secret', { expiresIn: '1h' });
+    const token = jwt.sign({ id: user._id }, 'sexy_pratyaksh', { expiresIn: '7d' });
     res.json({ token });
   } catch (error) {
     res.status(500).json({ message: 'Error logging in', error });

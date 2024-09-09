@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../contexts/AuthContext'; 
 
 const Navbar = () => {
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext); // Use AuthContext
   const navigate = useNavigate();
 
   const toggleProfileDropdown = () => {
@@ -16,6 +18,20 @@ const Navbar = () => {
 
   const closeSidebar = () => {
     setSidebarOpen(false);
+  };
+
+  const handleLogout = () => {
+    try {
+      // Simple logout logic
+      console.log('Attempting to logout...');
+      localStorage.removeItem('sellerToken'); // Ensure this key is correct
+      setIsAuthenticated(false);
+      console.log('Logout successful, redirecting...');
+      navigate('/seller-login'); // Ensure this route is correct
+    } catch (error) {
+      console.error('Error during logout:', error);
+      alert('Logout failed. Please try again.');
+    }
   };
 
   return (
@@ -61,12 +77,37 @@ const Navbar = () => {
             </button>
             {profileDropdownOpen && (
               <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20">
-                <Link
-                  to="/profile"
-                  className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
-                >
-                  Profile
-                </Link>
+                {isAuthenticated ? (
+                  <>
+                    <Link
+                      to="/profile"
+                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                    >
+                      Profile
+                    </Link>
+                    <button
+                      onClick={handleLogout}
+                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left"
+                    >
+                      Logout
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <Link
+                      to="/seller-login"
+                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                    >
+                      Login
+                    </Link>
+                    <Link
+                      to="/seller-register"
+                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                    >
+                      Register
+                    </Link>
+                  </>
+                )}
               </div>
             )}
           </div>
@@ -101,7 +142,6 @@ const Navbar = () => {
             </div>
             <div className="flex-1 h-0 pt-5 pb-4 overflow-y-auto">
               <nav className="mt-5 px-2 space-y-1">
-                {/* New Menu Links */}
                 <Link
                   to="/"
                   onClick={closeSidebar}
@@ -136,6 +176,27 @@ const Navbar = () => {
                   className="block py-2 text-white hover:bg-[#1b6b56] rounded"
                 >
                   Reports
+                </Link>
+                <Link
+                  to="/profile"
+                  onClick={closeSidebar}
+                  className="block py-2 text-white hover:bg-[#1b6b56] rounded"
+                >
+                  Profile
+                </Link>
+                <Link
+                  to="/seller-login"
+                  onClick={closeSidebar}
+                  className="block py-2 text-white hover:bg-[#1b6b56] rounded"
+                >
+                  Login
+                </Link>
+                <Link
+                  to="/seller-register"
+                  onClick={closeSidebar}
+                  className="block py-2 text-white hover:bg-[#1b6b56] rounded"
+                >
+                  Register
                 </Link>
               </nav>
             </div>

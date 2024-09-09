@@ -9,6 +9,8 @@ const wishlistRoutes = require('./src/routes/wishlistRoutes');
 const errorHandler = require('./src/utils/errorHandler');
 const categoryRoutes = require('./src/routes/categoryRoutes');
 const userRoutes = require('./src/routes/userRoutes');
+const sellerRoutes = require('./src/routes/sellerRoutes');
+
 
 
 
@@ -27,6 +29,8 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/wishlist', wishlistRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/sellers', sellerRoutes);
+
 
 
 app.use(errorHandler);

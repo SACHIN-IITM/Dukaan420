@@ -10,10 +10,15 @@ const getProducts = async (req, res) => {
   }
 };
 
-// Get a product by ID
 const getProductById = async (req, res) => {
+  console.log("hello");
   try {
-    const product = await Product.findById(req.params.id);
+    const id = req.params.id;
+    console.log("Request ID:", id);
+
+    // Manually query using _id field
+    const product = await Product.findOne({ _id: id });
+    console.log("Product:", product);
     if (!product) {
       return res.status(404).json({ message: 'Product not found' });
     }
@@ -23,6 +28,7 @@ const getProductById = async (req, res) => {
   }
 };
 
+
 // Create a new product
 const createProduct = async (req, res) => {
   const product = new Product({
@@ -31,7 +37,8 @@ const createProduct = async (req, res) => {
     price: req.body.price,
     images: req.body.images,
     category: req.body.category,
-    stock: req.body.stock
+    stock: req.body.stock,
+    sellerInfo: req.body.sellerInfo, // Added sellerInfo
   });
 
   try {
@@ -53,7 +60,8 @@ const updateProduct = async (req, res) => {
         price: req.body.price,
         images: req.body.images,
         category: req.body.category,
-        stock: req.body.stock
+        stock: req.body.stock,
+        sellerInfo: req.body.sellerInfo, // Added sellerInfo
       },
       { new: true }
     );

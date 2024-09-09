@@ -95,7 +95,7 @@ exports.protect = async (req, res, next) => {
 };
 
 // Get User Profile
-exports.getUserProfile = async (req, res, next) => {
+exports.getUserProfile = async (req, res, next,) => {
   try {
     const user = await User.findById(req.user._id);
     if (!user) {

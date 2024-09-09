@@ -1,4 +1,3 @@
-// ProductPage.jsx
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getProduct, createOrder, getUserProfile } from '../utils/api';
@@ -42,12 +41,6 @@ const ProductPage = () => {
     }
 
     try {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        alert('You must be logged in to place an order.');
-        return;
-      }
-
       const orderData = {
         orderItems: [
           {
@@ -57,22 +50,37 @@ const ProductPage = () => {
         ],
         totalAmount: product.price,
         shippingAddress: {
-          address: user.address || '123 Main St',
-          city: user.city || 'New York',
-          postalCode: user.postalCode || '10001',
-          country: user.country || 'USA',
+          address: user.street || '123 Main St',
+          city: user.city || 'Unknown City',
+          postalCode: user.pin || '00000',
+          country: user.country || 'Unknown Country',
         },
-        user: user._id // Include user ID here
+        userEmail: user.email, // Sending the user's email
+        userName: user.name,   // Sending the user's name
+
+        // Seller information (adjust based on product object fields)
+        sellerInfo: {
+          sellerAddress: {
+            address: product.sellerInfo?.sellerAddress?.address || 'Seller Address',
+            city: product.sellerInfo?.sellerAddress?.city || 'Seller City',
+            postalCode: product.sellerInfo?.sellerAddress?.postalCode || '00000',
+            country: product.sellerInfo?.sellerAddress?.country || 'Unknown Country',
+          },
+          sellerPhone: product.sellerInfo?.sellerPhone || '000-000-0000',
+          sellerEmail: product.sellerInfo?.sellerEmail || 'seller@example.com',
+        }
       };
+
+      console.log('Order data:', orderData); // Log the order data for debugging
 
       const config = {
         headers: {
-          Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${user.token}`, // Assuming user has a token, adjust accordingly
         },
       };
 
-      const { data } = await createOrder(orderData, config);
+      const { data } = await createOrder(orderData, config); // Pass config along with data
       setOrderDetails(data);
       setModalOpen(true);
     } catch (error) {
@@ -117,6 +125,7 @@ const ProductPage = () => {
             <h2 className="text-2xl font-bold mb-4">Order Confirmation</h2>
             <p className="text-lg mb-2">Order ID: {orderDetails._id}</p>
             <p className="text-lg mb-2">Total Amount: ${orderDetails.totalAmount}</p>
+
             <h3 className="text-xl font-semibold mb-2">Order Items:</h3>
             <ul className="list-disc list-inside mb-4">
               {orderDetails.orderItems.map((item) => (
@@ -125,14 +134,26 @@ const ProductPage = () => {
                 </li>
               ))}
             </ul>
+
             <h3 className="text-xl font-semibold mb-2">Shipping Address:</h3>
             <p className="mb-2">{orderDetails.shippingAddress.address}</p>
             <p className="mb-2">{orderDetails.shippingAddress.city}, {orderDetails.shippingAddress.postalCode}</p>
             <p className="mb-4">{orderDetails.shippingAddress.country}</p>
+
             <h3 className="text-xl font-semibold mb-2">User Info:</h3>
             {orderDetails.user && (
-              <p className="mb-2">User ID: {orderDetails.user._id}</p>
+              <>
+                <p className="mb-2">User ID: {orderDetails.user._id}</p>
+                <p className="mb-2">Name: {orderDetails.userName}</p>
+                <p className="mb-2">Email: {orderDetails.userEmail}</p>
+              </>
             )}
+
+            <h3 className="text-xl font-semibold mb-2">Seller Info:</h3>
+            <p className="mb-2">Seller Address: {orderDetails.sellerInfo.sellerAddress.address}</p>
+            <p className="mb-2">Seller Phone: {orderDetails.sellerInfo.sellerPhone}</p>
+            <p className="mb-2">Seller Email: {orderDetails.sellerInfo.sellerEmail}</p>
+
             <button
               onClick={() => setModalOpen(false)}
               className="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600"

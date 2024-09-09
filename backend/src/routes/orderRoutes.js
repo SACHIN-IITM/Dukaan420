@@ -3,26 +3,34 @@ const express = require('express');
 const router = express.Router();
 const Order = require('../models/orderModel');
 const Product = require('../models/productModel');
-const User = require('../models/userModel'); // Ensure this model exists
+const Seller = require('../models/sellerModel');
+const findUserByEmail = require('../middleware/findUserByEmail');
 
 // Create Order
-router.post('/', async (req, res) => {
-  const { orderItems, totalAmount, shippingAddress, user } = req.body; // Include user field
+router.post('/', findUserByEmail, async (req, res) => {
+  const { orderItems, totalAmount, shippingAddress, sellerId } = req.body; // Assume sellerId is provided
+  const user = req.user; // User is populated by middleware
+
+  console.log('Request body:', req.body); // Log the request body for debugging
+
+  if (!orderItems || orderItems.length === 0) {
+    return res.status(400).json({ message: 'Order items are required.' });
+  }
 
   try {
-    // Validate order items
-    for (const item of orderItems) {
-      const product = await Product.findById(item.product);
-      if (!product) {
-        return res.status(400).json({ message: 'Product not found' });
+    // Validate sellerId and find the seller
+    if (sellerId) {
+      const seller = await Seller.findById(sellerId);
+      if (!seller) {
+        return res.status(400).json({ message: `Seller with ID ${sellerId} not found` });
       }
     }
 
-    // Verify the user if provided
-    if (user) {
-      const userExists = await User.findById(user);
-      if (!userExists) {
-        return res.status(400).json({ message: 'User not found' });
+    // Validate each order item
+    for (const item of orderItems) {
+      const product = await Product.findById(item.product);
+      if (!product) {
+        return res.status(400).json({ message: `Product with ID ${item.product} not found` });
       }
     }
 
@@ -31,38 +39,17 @@ router.post('/', async (req, res) => {
       orderItems,
       totalAmount,
       shippingAddress,
-      user, // Include user if provided
+      user: user._id,  // Use the user's ID from the middleware
+      userEmail: user.email, // Ensure the user email is correct
+      userName: user.name,   // Ensure the user name is correct
+      seller: sellerId       // Reference the seller ID
     });
 
     await order.save();
     res.status(201).json(order);
   } catch (error) {
-    res.status(500).json({ message: 'Server Error', error });
-  }
-});
-
-// Fetch all orders
-router.get('/', async (req, res) => {
-  try {
-    const orders = await Order.find().populate('orderItems.product').populate('user');
-    res.status(200).json(orders);
-  } catch (error) {
-    res.status(500).json({ message: 'Server Error', error });
-  }
-});
-
-// Fetch a specific order by ID
-router.get('/:id', async (req, res) => {
-  const { id } = req.params;
-
-  try {
-    const order = await Order.findById(id).populate('orderItems.product').populate('user');
-    if (!order) {
-      return res.status(404).json({ message: 'Order not found' });
-    }
-    res.status(200).json(order);
-  } catch (error) {
-    res.status(500).json({ message: 'Server Error', error });
+    console.error('Error creating order:', error); // Log the full error stack
+    res.status(500).json({ message: 'Server error. Unable to create order.', error: error.message });
   }
 });
 
