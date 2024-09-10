@@ -1,15 +1,20 @@
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
-const dotenv = require('dotenv');
-const connectDB = require('./config/db');
-const authRoutes = require('./routes/authRoutes');
-const productRoutes = require('./routes/productRoutes');
-const orderRoutes = require('./routes/orderRoutes');
-const wishlistRoutes = require('./routes/wishlistRoutes');
-const errorHandler = require('./utils/errorHandler');
+const connectDB = require('./src/config/db');
+const authRoutes = require('./src/routes/authRoutes');
+const productRoutes = require('./src/routes/productRoutes');
+const orderRoutes = require('./src/routes/orderRoutes');
+const wishlistRoutes = require('./src/routes/wishlistRoutes');
+const errorHandler = require('./src/utils/errorHandler');
+const categoryRoutes = require('./src/routes/categoryRoutes');
+const userRoutes = require('./src/routes/userRoutes');
+const sellerRoutes = require('./src/routes/sellerRoutes');
 
-dotenv.config();
+
+
+
+require('dotenv').config();
 connectDB();
 
 const app = express();
@@ -22,7 +27,9 @@ app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/wishlist', wishlistRoutes);
-
+app.use('/api/categories', categoryRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/sellers', sellerRoutes);
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;

@@ -1,42 +1,22 @@
+// orderModel.js
 const mongoose = require('mongoose');
 
+const addressSchema = new mongoose.Schema({
+  address: { type: String, required: true },
+  city: { type: String, required: true },
+  postalCode: { type: String, required: true },
+  country: { type: String, required: true }
+});
+
 const orderSchema = new mongoose.Schema({
-  user: { 
-    type: mongoose.Schema.Types.ObjectId, 
-    ref: 'User',
-    required: true 
-  },
-  orderItems: [
-    {
-      product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
-      quantity: Number,
-      price: Number
-    }
-  ],
-  shippingAddress: {
-    street: String,
-    city: String,
-    country: String,
-    zip: String
-  },
-  paymentInfo: {
-    transactionHash: String,
-    status: {
-      type: String,
-      enum: ['Pending', 'Completed', 'Failed'],
-      default: 'Pending'
-    }
-  },
-  totalPrice: Number,
-  orderStatus: {
-    type: String,
-    enum: ['Processing', 'Shipped', 'Delivered', 'Cancelled'],
-    default: 'Processing'
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now
-  }
+  orderId: { type: String, unique: true },  // Ensure unique constraint
+  orderItems: [{ product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' }, qty: { type: Number, required: true } }],
+  totalAmount: { type: Number, required: true },
+  shippingAddress: addressSchema,
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  userEmail: { type: String, required: true },
+  userName: { type: String, required: true },
+  seller: { type: mongoose.Schema.Types.ObjectId, ref: 'Seller' } // Reference to Seller
 });
 
 module.exports = mongoose.model('Order', orderSchema);
