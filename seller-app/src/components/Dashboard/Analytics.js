@@ -28,7 +28,7 @@ const Analytics = ({ revenue, orders, avgOrderValue }) => {
       },
       tooltip: {
         callbacks: {
-          label: (context) => `${context.dataset.label}: $${context.raw}`,
+          label: (context) => `${context.dataset.label}: Rs.${context.raw}`,
         },
       },
     },
@@ -40,7 +40,7 @@ const Analytics = ({ revenue, orders, avgOrderValue }) => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
         <div className="bg-gray-100 p-4 rounded-lg shadow-sm">
           <h3 className="text-lg font-semibold">Total Revenue</h3>
-          <p className="text-xl font-bold">${revenue}</p>
+          <p className="text-xl font-bold">Rs.{revenue}</p>
         </div>
         <div className="bg-gray-100 p-4 rounded-lg shadow-sm">
           <h3 className="text-lg font-semibold">Total Orders</h3>
@@ -48,7 +48,7 @@ const Analytics = ({ revenue, orders, avgOrderValue }) => {
         </div>
         <div className="bg-gray-100 p-4 rounded-lg shadow-sm">
           <h3 className="text-lg font-semibold">Average Order Value</h3>
-          <p className="text-xl font-bold">${avgOrderValue.toFixed(2)}</p>
+          <p className="text-xl font-bold">Rs.{avgOrderValue.toFixed(2)}</p>
         </div>
       </div>
       <Bar data={data} options={options} />
