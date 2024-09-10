@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api';
+const API_URL = 'https://dukaan420.onrender.com/api';
 
 // Helper to get the token from localStorage
 const getAuthHeaders = () => {

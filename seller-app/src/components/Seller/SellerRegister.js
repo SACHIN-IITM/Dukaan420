@@ -38,7 +38,7 @@ const SellerRegister = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/sellers/register', formData);
+      await axios.post('https://dukaan420.onrender.com/api/sellers/register', formData);
       alert('Registration successful!');
       window.location.href = '/seller-login'; // Redirect to login page after successful registration
     } catch (error) {

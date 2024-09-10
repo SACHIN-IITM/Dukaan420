@@ -16,7 +16,7 @@ const ProfilePage = () => {
         throw new Error('No token found');
       }
 
-      const { data } = await axios.get('http://localhost:5000/api/auth/profile', {
+      const { data } = await axios.get('https://dukaan420.onrender.com/api/auth/profile', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -330,7 +330,7 @@ const updateUserProfile = async (formData) => {
     throw new Error('No token found');
   }
 
-  await axios.put('http://localhost:5000/api/auth/profile', formData, {
+  await axios.put('https://dukaan420.onrender.com/api/auth/profile', formData, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -343,7 +343,7 @@ const deleteUserProfile = async () => {
     throw new Error('No token found');
   }
 
-  await axios.delete('http://localhost:5000/api/auth/profile', {
+  await axios.delete('https://dukaan420.onrender.com/api/auth/profile', {
     headers: {
       Authorization: `Bearer ${token}`,
     },

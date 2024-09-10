@@ -14,7 +14,7 @@ const Categories = () => {
   // Fetch categories from the API
   const fetchCategories = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/categories');
+      const response = await axios.get('https://dukaan420.onrender.com/api/categories');
       setCategories(response.data);
     } catch (error) {
       console.error('Error fetching categories', error);
@@ -24,7 +24,7 @@ const Categories = () => {
   // Add new category
   const handleAddCategory = async () => {
     try {
-      await axios.post('http://localhost:5000/api/categories', newCategory);
+      await axios.post('https://dukaan420.onrender.com/api/categories', newCategory);
       fetchCategories(); // Refresh list after adding
       setNewCategory({ name: '', description: '' });
     } catch (error) {
@@ -35,7 +35,7 @@ const Categories = () => {
   // Delete category
   const handleDeleteCategory = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/categories/${id}`);
+      await axios.delete(`https://dukaan420.onrender.com/api/categories/${id}`);
       fetchCategories(); // Refresh list after deleting
     } catch (error) {
       console.error('Error deleting category', error);
@@ -51,7 +51,7 @@ const Categories = () => {
   // Save edited category
   const handleSaveEditCategory = async () => {
     try {
-      await axios.put(`http://localhost:5000/api/categories/${editingCategoryId}`, editingCategory);
+      await axios.put(`https://dukaan420.onrender.com/api/categories/${editingCategoryId}`, editingCategory);
       fetchCategories(); // Refresh list
       setEditingCategoryId(null); // Exit edit mode
     } catch (error) {

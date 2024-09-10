@@ -18,7 +18,7 @@ const ProductForm = ({ addProduct, initialData }) => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/categories'); // Update with your API endpoint
+        const response = await axios.get('https://dukaan420.onrender.com/api/categories'); // Update with your API endpoint
         setCategories(response.data);
       } catch (error) {
         console.error('Error fetching categories:', error);

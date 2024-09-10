@@ -21,7 +21,7 @@ const Sellers = () => {
   useEffect(() => {
     const fetchSellers = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/sellers/sellers');
+        const response = await axios.get('https://dukaan420.onrender.com/api/sellers/sellers');
         setSellers(response.data);
         setLoading(false);
       } catch (err) {
@@ -37,7 +37,7 @@ const Sellers = () => {
   // Handle delete operation
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/sellers/seller/${id}`);
+      await axios.delete(`https://dukaan420.onrender.com/api/sellers/seller/${id}`);
       setSellers(sellers.filter((seller) => seller._id !== id));
     } catch (err) {
       console.error('Error deleting seller:', err);
@@ -72,7 +72,7 @@ const Sellers = () => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:5000/api/sellers/seller/${currentSeller._id}`, formData);
+      await axios.put(`https://dukaan420.onrender.com/api/sellers/seller/${currentSeller._id}`, formData);
       setSellers(
         sellers.map((seller) =>
           seller._id === currentSeller._id ? { ...seller, ...formData, address: { ...formData } } : seller

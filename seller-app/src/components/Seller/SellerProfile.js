@@ -17,7 +17,7 @@ const SellerProfile = () => {
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/sellers/profile', {
+        const response = await axios.get('https://dukaan420.onrender.com/api/sellers/profile', {
           headers: { Authorization: `Bearer ${token}` },
         });
         const { name, email, phone, address, city, postalCode, country } = response.data;
@@ -43,7 +43,7 @@ const SellerProfile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put('http://localhost:5000/api/sellers/profile', profile, {
+      await axios.put('https://dukaan420.onrender.com/api/sellers/profile', profile, {
         headers: { Authorization: `Bearer ${token}` },
       });
       alert('Profile updated successfully!');
@@ -57,7 +57,7 @@ const SellerProfile = () => {
   const handleDelete = async () => {
     if (window.confirm('Are you sure you want to delete your profile? This action cannot be undone.')) {
       try {
-        await axios.delete('http://localhost:5000/api/sellers/profile', {
+        await axios.delete('https://dukaan420.onrender.com/api/sellers/profile', {
           headers: { Authorization: `Bearer ${token}` },
         });
         alert('Profile deleted successfully!');

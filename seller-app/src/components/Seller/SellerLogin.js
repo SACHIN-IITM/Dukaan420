@@ -20,7 +20,7 @@ const SellerLogin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/sellers/login', formData);
+      const response = await axios.post('https://dukaan420.onrender.com/api/sellers/login', formData);
       const { token } = response.data;
       localStorage.setItem('sellerToken', token); // Store token in localStorage
       alert('Login successful!');

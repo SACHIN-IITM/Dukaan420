@@ -10,7 +10,7 @@ const ProductPage = () => {
   // Fetch products
   const fetchProducts = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/products');
+      const response = await fetch('https://dukaan420.onrender.com/api/products');
       const productList = await response.json();
       setProducts(productList);
     } catch (error) {
@@ -21,7 +21,7 @@ const ProductPage = () => {
   // Add a product
   const addProduct = async (newProduct) => {
     try {
-      const response = await fetch('http://localhost:5000/api/products', {
+      const response = await fetch('https://dukaan420.onrender.com/api/products', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

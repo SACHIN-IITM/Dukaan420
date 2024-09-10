@@ -19,7 +19,7 @@ const ProductDetailPage = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/products/${id}`);
+        const response = await fetch(`https://dukaan420.onrender.com/api/products/${id}`);
         const data = await response.json();
         setProduct(data);
         setEditedProduct({
@@ -40,7 +40,7 @@ const ProductDetailPage = () => {
 
   const handleDelete = async () => {
     try {
-      await fetch(`http://localhost:5000/api/products/${id}`, {
+      await fetch(`https://dukaan420.onrender.com/api/products/${id}`, {
         method: 'DELETE',
       });
       navigate('/products');
@@ -51,7 +51,7 @@ const ProductDetailPage = () => {
 
   const handleSave = async (updatedProduct) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/products/${id}`, {
+      const response = await fetch(`https://dukaan420.onrender.com/api/products/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
