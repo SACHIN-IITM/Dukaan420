@@ -30,10 +30,6 @@ app.use('/api/wishlist', wishlistRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/sellers', sellerRoutes);
-
-
-
-
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;

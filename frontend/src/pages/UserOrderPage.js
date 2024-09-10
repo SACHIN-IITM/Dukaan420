@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getOrder, getUserProfile } from '../utils/api';
 import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
@@ -9,11 +10,11 @@ const UserOrdersPage = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate(); // Initialize navigate
 
   useEffect(() => {
     const fetchUserAndOrders = async () => {
       try {
-        // Fetch user profile to get user information
         const { data: userData } = await getUserProfile();
         console.log(userData.data.user._id);
 
@@ -21,8 +22,7 @@ const UserOrdersPage = () => {
           const userInfo = userData.data.user;
           setUser(userInfo);
 
-          // Fetch orders for the logged-in user using user ID
-          const ordersData = await getOrder(userInfo._id); // Pass user ID to getUserOrders
+          const ordersData = await getOrder(userInfo._id);
           console.log(ordersData.data);
           setOrders(ordersData.data);
         }
@@ -37,14 +37,22 @@ const UserOrdersPage = () => {
     fetchUserAndOrders();
   }, []);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
+  if (loading) return <div className="text-center mt-10">Loading...</div>;
+  if (error) return <div className="text-center mt-10 text-red-500">{error}</div>;
 
   return (
-    <div>
+    <div className="flex flex-col min-h-screen">
       <Navbar />
-      <main className="container mx-auto p-4">
+      <main className="flex-grow container mx-auto p-4">
         <div className="bg-white shadow-md rounded-lg p-4">
+          <div className="mb-4">
+            <button
+              onClick={() => navigate(-1)}
+              className="bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600"
+            >
+              Go Back
+            </button>
+          </div>
           <h1 className="text-3xl font-bold mb-4">My Orders</h1>
           {orders.length === 0 ? (
             <p>No orders found.</p>
@@ -52,11 +60,11 @@ const UserOrdersPage = () => {
             <table className="min-w-full bg-white border border-gray-200">
               <thead>
                 <tr>
-                  <th className="py-2 px-4 border-b">Order ID</th>
-                  <th className="py-2 px-4 border-b">Total Amount</th>
-                  <th className="py-2 px-4 border-b">Date</th>
-                  <th className="py-2 px-4 border-b">Shipping Address</th>
-                  <th className="py-2 px-4 border-b">Actions</th>
+                  <th className="py-2 px-4 border-b text-left">Order ID</th>
+                  <th className="py-2 px-4 border-b text-left">Total Amount</th>
+                  <th className="py-2 px-4 border-b text-left">Date</th>
+                  <th className="py-2 px-4 border-b text-left">Shipping Address</th>
+                  <th className="py-2 px-4 border-b text-left">Actions</th>
                 </tr>
               </thead>
               <tbody>

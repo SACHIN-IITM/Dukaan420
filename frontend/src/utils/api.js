@@ -79,7 +79,6 @@ export const getWishlist = async () => {
   return await axios.get(`${API_URL}/wishlist`, config);
 };
 
-// Add a product to the wishlist
 export const addProductToWishlist = async (userId, productId) => {
   const config = {
     headers: getAuthHeaders(),

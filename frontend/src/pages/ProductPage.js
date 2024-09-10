@@ -4,13 +4,17 @@ import {jwtDecode} from 'jwt-decode'; // For decoding the JWT token
 import { getProduct, createOrder, addProductToWishlist } from '../utils/api';
 import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
+import { useNavigate } from 'react-router-dom';
+
 
 const ProductPage = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [orderDetails, setOrderDetails] = useState(null);
-  const [userId, setUserId] = useState(null); // Store user ID from JWT
+  const [userId, setUserId] = useState(null); 
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -23,15 +27,15 @@ const ProductPage = () => {
     };
 
     const getTokenAndDecode = () => {
-      const token = localStorage.getItem('token'); // Retrieve JWT from localStorage or cookies
+      const token = localStorage.getItem('token'); 
       if (token) {
-        const decodedToken = jwtDecode(token); // Decode JWT to extract user ID
-        setUserId(decodedToken.id); // Set user ID
+        const decodedToken = jwtDecode(token); 
+        setUserId(decodedToken.id); 
       }
     };
 
     fetchProduct();
-    getTokenAndDecode(); // Get user ID from token
+    getTokenAndDecode();
   }, [id]);
 
   const handleBuy = async () => {
@@ -45,22 +49,22 @@ const ProductPage = () => {
         orderItems: [{ product: product._id, qty: 1 }],
         totalAmount: product.price,
         shippingAddress: {
-          address: '123 Main St', // You can update this to take address from the user profile if needed
-          city: 'Unknown City',
-          postalCode: '00000',
-          country: 'Unknown Country',
+          address: 'Adips Shastri park ',
+          city: 'delhi',
+          postalCode: '110053',
+          country: 'India',
         },
-        userEmail: 'user@example.com', // Dummy email, should come from the user profile
-        userName: 'John Doe', // Dummy name, should come from the user profile
+        userEmail: 'adgips@gmail.com', 
+        userName: 'sachin kumar',
         sellerInfo: product.sellerInfo || {
           sellerAddress: {
-            address: 'Seller Address',
-            city: 'Seller City',
-            postalCode: '00000',
-            country: 'Unknown Country',
+            address: 'adgips delhi',
+            city: 'Delhi',
+            postalCode: '110053',
+            country: 'India',
           },
-          sellerPhone: '000-000-0000',
-          sellerEmail: 'seller@example.com',
+          sellerPhone: '231-3243-3243',
+          sellerEmail: 'seller@gmail.com',
         }
       };
 
@@ -84,7 +88,7 @@ const ProductPage = () => {
     }
 
     try {
-      await addProductToWishlist(userId, product._id); // Pass user ID from token and product ID
+      await addProductToWishlist(userId, product._id); 
       alert('Product added to wishlist!');
     } catch (error) {
       console.error('Error adding to wishlist:', error.response?.data?.message || error.message);
@@ -99,6 +103,14 @@ const ProductPage = () => {
       <Navbar />
       <main className="container mx-auto p-4">
         <div className="bg-white shadow-md rounded-lg p-4">
+        <div className="mb-4">
+            <button
+              onClick={() => navigate(-1)}
+              className="bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600"
+            >
+              Go Back
+            </button>
+          </div>
           <img src={product.imageUrl} alt={product.name} className="w-full h-64 object-cover" />
           <h1 className="text-3xl font-bold mt-4">{product.name}</h1>
           <p className="text-gray-600 mt-2">{product.description}</p>

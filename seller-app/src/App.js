@@ -12,7 +12,7 @@ import ReportsPage from './pages/ReportsPage';
 import HomePage from './pages/HomePage';
 import SellerLogin from './components/Seller/SellerLogin';
 import SellerRegister from './components/Seller/SellerRegister';
-import { AuthProvider, AuthContext } from './contexts/AuthContext'; // Import AuthProvider and AuthContext
+import { AuthProvider, AuthContext } from './contexts/AuthContext'; 
 import SellerProfile from './components/Seller/SellerProfile';
 
 const ProtectedRoute = ({ element: Component, ...rest }) => {
@@ -32,7 +32,6 @@ const App = () => {
             <Route path="/seller-login" element={<SellerLogin />} />
             <Route path="/seller-register" element={<SellerRegister />} />
 
-            {/* Protected Routes */}
             <Route path="/" element={<ProtectedRoute element={HomePage} />} />
             <Route path="/products" element={<ProtectedRoute element={ProductPage} />} />
             <Route path="/products/add" element={<ProtectedRoute element={AddProductPage} />} />
@@ -43,7 +42,6 @@ const App = () => {
             <Route path="/reports" element={<ProtectedRoute element={ReportsPage} />} />
             <Route path="/profile" element={<ProtectedRoute element={SellerProfile} />} />
 
-            {/* Redirect to login if no route matches */}
             <Route path="*" element={<Navigate to="/seller-login" />} />
           </Routes>
         </div>

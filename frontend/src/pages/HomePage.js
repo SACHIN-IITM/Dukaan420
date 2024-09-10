@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Footer from '../components/Footer/Footer';
 import Navbar from '../components/Navbar/Navbar';
 import ProductList from '../components/Product/ProductList';
-import { getCategories, getProducts } from '../utils/api'; // Import API utilities to fetch products and categories
+import { getCategories, getProducts } from '../utils/api';
 
 const HomePage = () => {
   const [categories, setCategories] = useState([]);
@@ -23,7 +23,7 @@ const HomePage = () => {
 
     const fetchProducts = async () => {
       try {
-        const { data } = await getProducts(); // Fetch all products
+        const { data } = await getProducts();
         setProducts(data);
         setFilteredProducts(data);
       } catch (error) {
@@ -36,7 +36,6 @@ const HomePage = () => {
   }, []);
 
   useEffect(() => {
-    // Filter products based on category and search term
     const filterProducts = () => {
       let filtered = products;
 
@@ -59,10 +58,9 @@ const HomePage = () => {
   }, [selectedCategory, searchTerm, products]);
 
   return (
-    <div>
+    <div className="flex flex-col min-h-screen">
       <Navbar />
-      <main className="p-4">
-        {/* Search Bar */}
+      <main className="flex-grow p-4">
         <div className="container mx-auto mb-6">
           <input
             type="text"
@@ -72,14 +70,12 @@ const HomePage = () => {
             className="w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-
-        {/* Categories */}
         <div className="container mx-auto mb-6">
           <div className="flex overflow-x-auto space-x-4">
             <button
               onClick={() => setSelectedCategory('')}
               className={`px-4 py-2 rounded-lg ${
-                !selectedCategory ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'
+                !selectedCategory ? 'bg-accent text-white' : 'bg-gray-200 text-gray-700'
               }`}
             >
               All
@@ -90,7 +86,7 @@ const HomePage = () => {
                 onClick={() => setSelectedCategory(category.name)}
                 className={`px-4 py-2 rounded-lg ${
                   selectedCategory === category.name
-                    ? 'bg-blue-500 text-white'
+                    ? 'bg-accent text-white'
                     : 'bg-gray-200 text-gray-700'
                 }`}
               >
@@ -99,8 +95,6 @@ const HomePage = () => {
             ))}
           </div>
         </div>
-
-        {/* Product List */}
         <ProductList products={filteredProducts} />
       </main>
       <Footer />

@@ -1,32 +1,26 @@
+// components/Dashboard/OrderTable.jsx
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 const OrderTable = ({ orders }) => {
   return (
-    <div className="bg-gray-100 p-4 rounded-lg shadow-md">
-      <h2 className="text-xl font-semibold text-black mb-4">Order Details</h2>
-      <table className="w-full bg-white border rounded-lg">
-        <thead className="bg-gray-200">
+    <div className="bg-white shadow-md rounded-lg p-6">
+      <h2 className="text-2xl font-bold mb-4">Recent Orders</h2>
+      <table className="w-full table-auto border-collapse">
+        <thead>
           <tr>
-            <th className="p-2 border">ID</th>
-            <th className="p-2 border">Order ID</th>
-            <th className="p-2 border">Item</th>
-            <th className="p-2 border">Price</th>
-            <th className="p-2 border">Status</th>
-            <th className="p-2 border">Details</th>
+            <th className="border-b px-4 py-2 text-left">Order ID</th>
+            <th className="border-b px-4 py-2 text-left">Item</th>
+            <th className="border-b px-4 py-2 text-left">Price</th>
+            <th className="border-b px-4 py-2 text-left">Status</th>
           </tr>
         </thead>
         <tbody>
           {orders.map((order) => (
             <tr key={order.id}>
-              <td className="p-2 border">{order.id}</td>
-              <td className="p-2 border">{order.orderId}</td>
-              <td className="p-2 border">{order.item}</td>
-              <td className="p-2 border">${order.price}</td>
-              <td className="p-2 border">{order.status}</td>
-              <td className="p-2 border">
-                <Link to={`/order/${order.id}`} className="text-blue-500">View Details</Link>
-              </td>
+              <td className="border-b px-4 py-2">{order.orderId}</td>
+              <td className="border-b px-4 py-2">{order.item}</td>
+              <td className="border-b px-4 py-2">${order.price}</td>
+              <td className="border-b px-4 py-2">{order.status}</td>
             </tr>
           ))}
         </tbody>

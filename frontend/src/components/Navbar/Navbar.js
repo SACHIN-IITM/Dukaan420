@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { getUserProfile } from '../../utils/api'; // Ensure this function fetches profile based on token
+import { getUserProfile } from '../../utils/api'; 
+import { UserCircleIcon } from '@heroicons/react/24/outline';
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -9,13 +10,11 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Check if the user is logged in and fetch user data
     const checkUserStatus = async () => {
       try {
         const token = localStorage.getItem('token');
         if (token) {
           setIsLoggedIn(true);
-          // Fetch user profile
           const { data } = await getUserProfile();
           setUser(data.user);
         } else {
@@ -57,11 +56,15 @@ const Navbar = () => {
                   onClick={toggleDropdown}
                   className="flex items-center focus:outline-none"
                 >
-                  <img
-                    src={user?.profilePicture || '/path-to-your-default-user-icon.png'} // Update this path or add a default image
-                    alt="User Icon"
-                    className="w-8 h-8 rounded-full"
-                  />
+                  {user?.profilePicture ? (
+                    <img
+                      src={user.profilePicture}
+                      alt="User Profile"
+                      className="w-8 h-8 rounded-full object-cover"
+                    />
+                  ) : (
+                    <UserCircleIcon className="w-8 h-8 text-gray-300" />
+                  )}
                 </button>
                 {isDropdownOpen && (
                   <div className="absolute right-0 mt-2 w-48 bg-white text-black rounded-lg shadow-lg">

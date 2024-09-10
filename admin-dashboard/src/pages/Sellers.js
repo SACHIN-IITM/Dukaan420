@@ -101,7 +101,7 @@ const Sellers = () => {
       ) : (
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
-            <thead className="bg-gray-800 text-white">
+            <thead className="bg-green-600 text-white">
               <tr>
                 <th className="py-3 px-6 text-left">Name</th>
                 <th className="py-3 px-6 text-left">Email</th>
@@ -126,7 +126,7 @@ const Sellers = () => {
                   <td className="py-3 px-6 text-right">
                     <button
                       onClick={() => handleEdit(seller)}
-                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
+                      className="bg-accent hover:bg-green-800 text-white font-bold py-2 px-4 rounded mr-2"
                     >
                       Edit
                     </button>
@@ -236,7 +236,7 @@ const Sellers = () => {
                 </button>
                 <button
                   type="submit"
-                  className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+                  className="bg-accent text-white px-4 py-2 rounded-lg"
                 >
                   Save Changes
                 </button>

@@ -13,10 +13,9 @@ const ProductDetailPage = () => {
     price: '',
     category: '',
     stock: '',
-    imageUrl: '', // Updated from images array to single image URL for simplicity
+    imageUrl: '', 
   });
 
-  // Fetch product details
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -110,7 +109,6 @@ const ProductDetailPage = () => {
         </button>
       </div>
 
-      {/* Modal for editing product */}
       {isModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50">
           <div className="bg-white p-2 rounded-lg shadow-lg w-full max-w-lg">

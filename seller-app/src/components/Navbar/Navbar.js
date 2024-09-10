@@ -156,7 +156,7 @@ const Navbar = () => {
                 >
                   Product Management
                 </Link>
-                <Link
+                {/* <Link
                   to="/customers"
                   onClick={closeSidebar}
                   className="block py-2 text-white hover:bg-[#1b6b56] rounded"
@@ -176,7 +176,7 @@ const Navbar = () => {
                   className="block py-2 text-white hover:bg-[#1b6b56] rounded"
                 >
                   Reports
-                </Link>
+                </Link> */}
                 <Link
                   to="/profile"
                   onClick={closeSidebar}

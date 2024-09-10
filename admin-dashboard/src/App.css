@@ -1,3 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.bg-accent {
+  background-color: #208468;
+}
+
+.bg-accent-dark {
+  background-color: #0e4e39;
+}
+
+
+
 .App {
   text-align: center;
 }
