@@ -15,7 +15,7 @@ const ProductList = ({ products }) => {
               />
               <div className="p-6">
                 <h2 className="text-2xl font-semibold text-gray-800 mb-2">{product.name}</h2>
-                <p className="text-xl font-bold text-gray-900 mb-2">${product.price}</p>
+                <p className="text-xl font-bold text-gray-900 mb-2">Rs.{product.price}</p>
                 <p className="text-gray-600 mb-4">{product.description}</p>
                 <Link
                   to={`/products/${product._id}`}

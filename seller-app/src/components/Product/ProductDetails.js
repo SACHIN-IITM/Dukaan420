@@ -24,7 +24,7 @@ const ProductDetails = ({ products, deleteProduct }) => {
         alt={product.name}
         className="w-full h-64 object-cover mb-4"
       />
-      <p className="text-lg mb-4">${product.price.toFixed(2)}</p>
+      <p className="text-lg mb-4">Rs.{product.price.toFixed(2)}</p>
       <p className="text-gray-700 mb-4">
         Detailed description of the product goes here.
       </p>

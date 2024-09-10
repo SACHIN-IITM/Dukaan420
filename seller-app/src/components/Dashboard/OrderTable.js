@@ -19,7 +19,7 @@ const OrderTable = ({ orders }) => {
             <tr key={order.id}>
               <td className="border-b px-4 py-2">{order.orderId}</td>
               <td className="border-b px-4 py-2">{order.item}</td>
-              <td className="border-b px-4 py-2">${order.price}</td>
+              <td className="border-b px-4 py-2">Rs.{order.price}</td>
               <td className="border-b px-4 py-2">{order.status}</td>
             </tr>
           ))}

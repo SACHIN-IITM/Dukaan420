@@ -13,8 +13,8 @@ const Dashboard = () => {
             <p className="text-lg text-gray-600"><strong>Total Customers:</strong> 100</p>
             <p className="text-lg text-gray-600"><strong>Total Sellers:</strong> 50</p>
             <p className="text-lg text-gray-600"><strong>Total Orders:</strong> 300</p>
-            <p className="text-lg text-gray-600"><strong>Total Revenue:</strong> $50,000</p>
-            <p className="text-lg text-gray-600"><strong>Average Order Value:</strong> $167</p>
+            <p className="text-lg text-gray-600"><strong>Total Revenue:</strong> Rs.50,000</p>
+            <p className="text-lg text-gray-600"><strong>Average Order Value:</strong> Rs.167</p>
             <p className="text-lg text-gray-600"><strong>Active Promotions:</strong> 5</p>
             <p className="text-lg text-gray-600"><strong>Pending Deliveries:</strong> 20</p>
           </div>
@@ -38,7 +38,7 @@ const Dashboard = () => {
         <div className="bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-2xl font-semibold text-gray-700 mb-4">Sales Overview</h2>
           <div className="space-y-2">
-            <p className="text-lg text-gray-600"><strong>Total Sales:</strong> $75,000</p>
+            <p className="text-lg text-gray-600"><strong>Total Sales:</strong> Rs.75,000</p>
             <p className="text-lg text-gray-600"><strong>Products Sold:</strong> 500</p>
             <p className="text-lg text-gray-600"><strong>Sales Growth:</strong> 12%</p>
             <p className="text-lg text-gray-600"><strong>Returning Customers:</strong> 30%</p>

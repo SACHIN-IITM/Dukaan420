@@ -12,7 +12,7 @@ const ProductCard = ({ product, onBuy, onAddToWishlist }) => {
       <div className="p-6">
         <h3 className="text-xl font-semibold text-gray-800">{product.name}</h3>
         <p className="text-gray-600 mt-1">{product.description}</p>
-        <p className="text-2xl font-bold text-gray-900 mt-2">${product.price}</p>
+        <p className="text-2xl font-bold text-gray-900 mt-2">Rs.{product.price}</p>
         <Link
           to={`/products/${product._id}`}
           className="mt-4 block text-center bg-accent text-white py-2 px-4 rounded-lg hover:bg-accent-dark transition-colors"
