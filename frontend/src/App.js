@@ -6,6 +6,8 @@ import LoginPage from './pages/LoginPage';
 import Register from './pages/Register';
 import ProfilePage from './pages/ProfilePage';
 import { getUserProfile } from './utils/api';
+import UserOrdersPage from './pages/UserOrderPage';
+import WishlistPage from './pages/WishlistPage';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -48,7 +50,9 @@ const App = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<Register />} />
         <Route path="/profile" element={<ProtectedRoute element={<ProfilePage />} />} />
-        {/* Add more protected routes here */}
+        <Route path="/orders" element={<ProtectedRoute element={<UserOrdersPage />} />} />
+        <Route path="/wishlist" element={<ProtectedRoute element={<WishlistPage />} />} />
+
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>

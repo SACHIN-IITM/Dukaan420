@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { getProduct, createOrder, getUserProfile } from '../utils/api';
+import {jwtDecode} from 'jwt-decode'; // For decoding the JWT token
+import { getProduct, createOrder, addProductToWishlist } from '../utils/api';
 import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
 
@@ -9,7 +10,7 @@ const ProductPage = () => {
   const [product, setProduct] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [orderDetails, setOrderDetails] = useState(null);
-  const [user, setUser] = useState(null);
+  const [userId, setUserId] = useState(null); // Store user ID from JWT
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -17,75 +18,77 @@ const ProductPage = () => {
         const { data } = await getProduct(id);
         setProduct(data);
       } catch (error) {
-        console.error('Error fetching product', error);
+        console.error('Error fetching product:', error);
       }
     };
 
-    const fetchUser = async () => {
-      try {
-        const { data } = await getUserProfile();
-        setUser(data);
-      } catch (error) {
-        console.error('Error fetching user profile', error);
+    const getTokenAndDecode = () => {
+      const token = localStorage.getItem('token'); // Retrieve JWT from localStorage or cookies
+      if (token) {
+        const decodedToken = jwtDecode(token); // Decode JWT to extract user ID
+        setUserId(decodedToken.id); // Set user ID
       }
     };
 
     fetchProduct();
-    fetchUser();
+    getTokenAndDecode(); // Get user ID from token
   }, [id]);
 
   const handleBuy = async () => {
-    if (!user) {
+    if (!userId) {
       alert('You must be logged in to place an order.');
       return;
     }
 
     try {
       const orderData = {
-        orderItems: [
-          {
-            product: product._id,
-            qty: 1,
-          },
-        ],
+        orderItems: [{ product: product._id, qty: 1 }],
         totalAmount: product.price,
         shippingAddress: {
-          address: user.street || '123 Main St',
-          city: user.city || 'Unknown City',
-          postalCode: user.pin || '00000',
-          country: user.country || 'Unknown Country',
+          address: '123 Main St', // You can update this to take address from the user profile if needed
+          city: 'Unknown City',
+          postalCode: '00000',
+          country: 'Unknown Country',
         },
-        userEmail: user.email, // Sending the user's email
-        userName: user.name,   // Sending the user's name
-
-        // Seller information (adjust based on product object fields)
-        sellerInfo: {
+        userEmail: 'user@example.com', // Dummy email, should come from the user profile
+        userName: 'John Doe', // Dummy name, should come from the user profile
+        sellerInfo: product.sellerInfo || {
           sellerAddress: {
-            address: product.sellerInfo?.sellerAddress?.address || 'Seller Address',
-            city: product.sellerInfo?.sellerAddress?.city || 'Seller City',
-            postalCode: product.sellerInfo?.sellerAddress?.postalCode || '00000',
-            country: product.sellerInfo?.sellerAddress?.country || 'Unknown Country',
+            address: 'Seller Address',
+            city: 'Seller City',
+            postalCode: '00000',
+            country: 'Unknown Country',
           },
-          sellerPhone: product.sellerInfo?.sellerPhone || '000-000-0000',
-          sellerEmail: product.sellerInfo?.sellerEmail || 'seller@example.com',
+          sellerPhone: '000-000-0000',
+          sellerEmail: 'seller@example.com',
         }
       };
 
-      console.log('Order data:', orderData); // Log the order data for debugging
-
       const config = {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${user.token}`, // Assuming user has a token, adjust accordingly
-        },
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${localStorage.getItem('token')}` },
       };
 
-      const { data } = await createOrder(orderData, config); // Pass config along with data
+      const { data } = await createOrder(orderData, config);
       setOrderDetails(data);
       setModalOpen(true);
     } catch (error) {
       console.error('Error placing order:', error.response?.data?.message || error.message);
       alert('Failed to place order. Please try again.');
+    }
+  };
+
+  const handleAddToWishlist = async () => {
+    if (!userId) {
+      alert('You must be logged in to add items to your wishlist.');
+      return;
+    }
+
+    try {
+      await addProductToWishlist(userId, product._id); // Pass user ID from token and product ID
+      alert('Product added to wishlist!');
+    } catch (error) {
+      console.error('Error adding to wishlist:', error.response?.data?.message || error.message);
+      alert('Failed to add product to wishlist.');
     }
   };
 
@@ -109,7 +112,7 @@ const ProductPage = () => {
               Buy
             </button>
             <button
-              onClick={() => console.log('Add to wishlist')}
+              onClick={handleAddToWishlist}
               className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600"
             >
               Add to Wishlist
@@ -129,7 +132,7 @@ const ProductPage = () => {
             <h3 className="text-xl font-semibold mb-2">Order Items:</h3>
             <ul className="list-disc list-inside mb-4">
               {orderDetails.orderItems.map((item) => (
-                <li key={item.product}>
+                <li key={item._id}>
                   Product ID: {item.product} - Quantity: {item.qty}
                 </li>
               ))}
@@ -141,18 +144,18 @@ const ProductPage = () => {
             <p className="mb-4">{orderDetails.shippingAddress.country}</p>
 
             <h3 className="text-xl font-semibold mb-2">User Info:</h3>
-            {orderDetails.user && (
-              <>
-                <p className="mb-2">User ID: {orderDetails.user._id}</p>
-                <p className="mb-2">Name: {orderDetails.userName}</p>
-                <p className="mb-2">Email: {orderDetails.userEmail}</p>
-              </>
-            )}
+            <p className="mb-2">User ID: {orderDetails.user}</p>
+            <p className="mb-2">Name: {orderDetails.userName}</p>
+            <p className="mb-2">Email: {orderDetails.userEmail}</p>
 
             <h3 className="text-xl font-semibold mb-2">Seller Info:</h3>
-            <p className="mb-2">Seller Address: {orderDetails.sellerInfo.sellerAddress.address}</p>
-            <p className="mb-2">Seller Phone: {orderDetails.sellerInfo.sellerPhone}</p>
-            <p className="mb-2">Seller Email: {orderDetails.sellerInfo.sellerEmail}</p>
+            {orderDetails.sellerInfo && (
+              <>
+                <p className="mb-2">Seller Address: {orderDetails.sellerInfo.sellerAddress.address}</p>
+                <p className="mb-2">Seller Phone: {orderDetails.sellerInfo.sellerPhone}</p>
+                <p className="mb-2">Seller Email: {orderDetails.sellerInfo.sellerEmail}</p>
+              </>
+            )}
 
             <button
               onClick={() => setModalOpen(false)}

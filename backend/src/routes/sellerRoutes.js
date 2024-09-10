@@ -1,7 +1,10 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken'); // For generating tokens
+const jwt = require('jsonwebtoken');
 const { Seller } = require('../models/sellerModel'); // Adjust path if necessary
+// const authMiddleware = require('../middleware/authMiddleware'); // Token verification middleware
+// const adminMiddleware = require('../middleware/adminMiddleware'); // Admin verification middleware
+require('dotenv').config(); // To use environment variables
 
 const router = express.Router();
 
@@ -71,7 +74,7 @@ router.get('/profile', async (req, res) => {
     }
 
     // Verify token
-    const decoded = jwt.verify(token, 'sexy_prat'); // Replace with your actual secret
+    const decoded = jwt.verify(token, 'sexy_pratyaksh'); // Replace with your actual secret
 
     // Find the seller by ID
     const seller = await Seller.findById(decoded.id);
@@ -104,7 +107,7 @@ router.put('/profile', async (req, res) => {
     }
 
     // Verify token
-    const decoded = jwt.verify(token, 'your_jwt_secret'); // Replace with your actual secret
+    const decoded = jwt.verify(token, 'sexy_pratyaksh'); // Replace with your actual secret
 
     // Find and update the seller by ID
     const updatedSeller = await Seller.findByIdAndUpdate(
@@ -154,7 +157,7 @@ router.delete('/profile', async (req, res) => {
     }
 
     // Verify token
-    const decoded = jwt.verify(token, 'your_jwt_secret'); // Replace with your actual secret
+    const decoded = jwt.verify(token, 'sexy_pratyaksh'); // Replace with your actual secret
 
     // Find and delete the seller by ID
     const deletedSeller = await Seller.findByIdAndDelete(decoded.id);
@@ -166,6 +169,61 @@ router.delete('/profile', async (req, res) => {
     res.status(200).json({ message: 'Profile deleted successfully' });
   } catch (error) {
     console.error('Error deleting profile:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Fetch All Sellers Route (Admin Only)
+router.get('/sellers', async (req, res) => {
+  try {
+    const sellers = await Seller.find({});
+    res.status(200).json(sellers);
+  } catch (error) {
+    console.error('Error fetching sellers:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Update Other Sellers (Admin Only)
+router.put('/seller/:id', async (req, res) => {
+  try {
+    const { name, phone, email, address } = req.body;
+
+    if (!name || !phone || !email || !address) {
+      return res.status(400).json({ message: 'All fields are required' });
+    }
+
+    const updatedSeller = await Seller.findByIdAndUpdate(
+      req.params.id,
+      {
+        $set: { name, phone, email, address },
+      },
+      { new: true }
+    );
+
+    if (!updatedSeller) {
+      return res.status(404).json({ message: 'Seller not found' });
+    }
+
+    res.status(200).json(updatedSeller);
+  } catch (error) {
+    console.error('Error updating seller:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Delete Other Sellers (Admin Only)
+router.delete('/seller/:id', async (req, res) => {
+  try {
+    const deletedSeller = await Seller.findByIdAndDelete(req.params.id);
+
+    if (!deletedSeller) {
+      return res.status(404).json({ message: 'Seller not found' });
+    }
+
+    res.status(200).json({ message: 'Seller deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting seller:', error);
     res.status(500).json({ message: 'Server error' });
   }
 });

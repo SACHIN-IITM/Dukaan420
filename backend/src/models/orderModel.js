@@ -9,6 +9,7 @@ const addressSchema = new mongoose.Schema({
 });
 
 const orderSchema = new mongoose.Schema({
+  orderId: { type: String, unique: true },  // Ensure unique constraint
   orderItems: [{ product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' }, qty: { type: Number, required: true } }],
   totalAmount: { type: Number, required: true },
   shippingAddress: addressSchema,

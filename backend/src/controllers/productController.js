@@ -1,4 +1,7 @@
+const { stringify } = require('uuid');
 const Product = require('../models/productModel');
+const mongoose = require('mongoose');
+
 
 // Get all products
 const getProducts = async (req, res) => {
@@ -16,8 +19,12 @@ const getProductById = async (req, res) => {
     const id = req.params.id;
     console.log("Request ID:", id);
 
-    // Manually query using _id field
-    const product = await Product.findOne({ _id: id });
+    // Ensure id is a valid ObjectId
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: 'Invalid product ID' });
+    }
+
+    const product = await Product.findByIdAndUpdate(id);
     console.log("Product:", product);
     if (!product) {
       return res.status(404).json({ message: 'Product not found' });
@@ -27,6 +34,7 @@ const getProductById = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 
 // Create a new product

@@ -24,7 +24,7 @@ export const createOrder = (orderData) => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
-      ...getAuthHeaders(),  // Include the Authorization token if available
+      ...getAuthHeaders(), // Include the Authorization token if available
     },
   };
   return axios.post(`${API_URL}/orders`, orderData, config);
@@ -35,21 +35,6 @@ export const getOrder = (id) => {
     headers: getAuthHeaders(),
   };
   return axios.get(`${API_URL}/orders/${id}`, config);
-};
-
-// Wishlist
-export const getWishlist = () => {
-  const config = {
-    headers: getAuthHeaders(),
-  };
-  return axios.get(`${API_URL}/wishlist`, config);
-};
-
-export const addToWishlist = (productId) => {
-  const config = {
-    headers: getAuthHeaders(),
-  };
-  return axios.post(`${API_URL}/wishlist`, { productId }, config);
 };
 
 // User Profile Management
@@ -75,4 +60,42 @@ export const deleteUserProfile = () => {
     headers: getAuthHeaders(),
   };
   return axios.delete(`${API_URL}/auth/profile`, config);
+};
+
+// Orders
+export const getUserOrders = async () => {
+  const config = {
+    headers: getAuthHeaders(),
+  };
+  const response = await axios.get(`${API_URL}/orders/user`, config);
+  return response.data;
+};
+
+// Wishlist
+export const getWishlist = async () => {
+  const config = {
+    headers: getAuthHeaders(),
+  };
+  return await axios.get(`${API_URL}/wishlist`, config);
+};
+
+// Add a product to the wishlist
+export const addProductToWishlist = async (userId, productId) => {
+  const config = {
+    headers: getAuthHeaders(),
+  };
+
+  return await axios.post(
+    `${API_URL}/wishlist`,
+    { userId, productId }, // Send both userId and productId
+    config
+  );
+};
+
+export const removeFromWishlist = async ( productId) => {
+  const config = {
+    headers: getAuthHeaders(),
+  };
+
+  return await axios.delete(`${API_URL}/wishlist/${productId}`,config);
 };
